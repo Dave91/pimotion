@@ -1,4 +1,5 @@
 import io
+import os
 import random
 import picamera
 import datetime as dt
@@ -41,14 +42,13 @@ try:
                     # Got what we need, wrap everything up
                     print("Finished recording...")
                     stream.copy_to('footage/motion_'+dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+'.h264')
-                    camera.stop_recording()
-                    camera.stop_preview()
+
+                    # Exit cleanly for now
+                    os._exit(1)
                 else:
                     # Update the timestamp overlay
                     print("Updating timestamp "+dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
                     camera.annotate_text = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                     camera.wait_recording(1)
 finally:
-    # Clean up
-    camera.stop_recording()
-    camera.stop_preview()
+    os._exit(1)
